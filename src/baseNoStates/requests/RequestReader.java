@@ -1,9 +1,10 @@
 package baseNoStates.requests;
 
-import baseNoStates.DirectoryDoors;
-import baseNoStates.DirectoryUsers;
-import baseNoStates.Door;
-import baseNoStates.User;
+import baseNoStates.firstmilestone.Door;
+import baseNoStates.firstmilestone.User;
+import baseNoStates.firstmilestone.DirectoryDoors;
+import baseNoStates.firstmilestone.DirectoryUsers;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 

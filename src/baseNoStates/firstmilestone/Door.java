@@ -1,6 +1,5 @@
-package baseNoStates;
+package baseNoStates.firstmilestone;
 
-import baseNoStates.DoorLocked;
 import baseNoStates.requests.RequestReader;
 import org.json.JSONObject;
 
@@ -13,7 +12,7 @@ public class Door {
   public Door(String id) {
     this.id = id;
     closed = true;
-    state = new DoorLocked();
+    state = new DoorUnlocked(this, id);
   }
 
   public void processRequest(RequestReader request) {
@@ -29,31 +28,21 @@ public class Door {
   }
 
   private void doAction(String action) {
-    current_state = state.getState();
     switch (action) {
       case Actions.OPEN:
-        if (closed) {
-          closed = false;
-        } else {
-          System.out.println("Can't open door " + id + " because it's already open");
-        }
+        state.open();
         break;
       case Actions.CLOSE:
-        if (closed) {
-          System.out.println("Can't close door " + id + " because it's already closed");
-        } else {
-          closed = true;
-        }
+        state.close();
         break;
       case Actions.LOCK:
-        // TODO
-        // fall through 
+        state.lock();
+        break;
       case Actions.UNLOCK:
-        // TODO
-        // fall through
+        state.unlock();
+        break;
       case Actions.UNLOCK_SHORTLY:
-        // TODO
-        System.out.println("Action " + action + " not implemented yet");
+        state.unlockShortly();
         break;
       default:
         assert false : "Unknown action " + action;
@@ -65,12 +54,24 @@ public class Door {
     return closed;
   }
 
+  public void setClosed(boolean close) {
+    closed = close;
+  }
+
   public String getId() {
     return id;
   }
 
   public String getStateName() {
-    return "unlocked";
+    return state.toString();
+  }
+
+  public DoorState getState() {
+    return state;
+  }
+
+  public void setState(DoorState state) {
+    this.state = state;
   }
 
   @Override

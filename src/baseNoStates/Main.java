@@ -1,5 +1,8 @@
 package baseNoStates;
 
+import baseNoStates.firstmilestone.DirectoryDoors;
+import baseNoStates.firstmilestone.DirectoryUsers;
+
 // Before executing enable assertions :
 // https://se-education.org/guides/tutorials/intellijUsefulSettings.html
 

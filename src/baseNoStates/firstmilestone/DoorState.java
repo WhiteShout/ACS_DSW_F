@@ -1,20 +1,35 @@
-package baseNoStates;
+package baseNoStates.firstmilestone;
 
 public abstract class DoorState {
   private final Door door;
-  private String state;
+  private String id;
 
+  public DoorState(Door door, String id) {
+    this.door = door;
+    this.id = id;
+  }
+
+  public static final String LOCKED = "locked";
+  public static final String UNLOCKED = "unlocked";
+  public static final String OPEN = "open";
+  public static final String CLOSED = "closed";
+  public static final String UNLOCKED_SHORTLY = "unlocked_shortly";
+  public static final String PROPPED = "propped";
+
+  public abstract void open();
+  public abstract void close();
+  public abstract void lock();
+  public abstract void unlock();
+  public abstract void unlockShortly();
+  public abstract void prop();
   
 
-  public static void update(){
-    
+  public String getId() {
+    return id;
   }
 
-  public String getState() {
-    return state;
+  public Door getDoor() {
+    return door;
   }
 
-  public void setState(String state) {
-    this.state = state;
-  }
 }

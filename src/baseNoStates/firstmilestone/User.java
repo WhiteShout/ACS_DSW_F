@@ -1,4 +1,4 @@
-package baseNoStates;
+package baseNoStates.firstmilestone;
 
 public class User {
   private final String name;
