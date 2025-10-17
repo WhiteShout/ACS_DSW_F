@@ -12,7 +12,7 @@ public class Clock extends Observable {
     long delay;
 
     public Clock() {
-        this.delay = 1000; //10 seconds
+        this.delay = 10000; //10 seconds
     }
 
     public Clock(long delay, Object observer) {
@@ -22,6 +22,7 @@ public class Clock extends Observable {
     }
 
     private void startTimer() {
+        //System.out.println("/--------------/ \n Timer Start \n /--------------/");
         Timer timer = new Timer();
         timer.schedule(notify_time(this), delay);
     }
@@ -30,6 +31,8 @@ public class Clock extends Observable {
         return new TimerTask() {
             @Override
             public void run() {
+                //System.out.println("/--------------/ \n Timer Done \n /--------------/");
+                setChanged();
                 notifyObservers();
             }
         };

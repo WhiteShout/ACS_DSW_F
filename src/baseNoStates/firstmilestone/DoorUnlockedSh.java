@@ -5,14 +5,15 @@ import java.util.TimerTask;
 
 public class DoorUnlockedSh extends DoorState implements Observer {
 
-    public DoorUnlockedSh(Door door, long seconds) {
+    public DoorUnlockedSh(Door door, long ms) {
         super(door, DoorState.UNLOCKED_SHORTLY);
-        Clock clock = new Clock(1000, this); 
+        Clock clock = new Clock((long) ms, this); 
 
     }
 
     @Override
     public void update(java.util.Observable observable, Object arg) {
+        //System.out.println("/--------------/ \n Update form observable \n /--------------/");
         if (door.isClosed()) {
             door.setState(new DoorLocked(door, getId()));
             System.out.println("Door " + door.getId() + " is now locked");

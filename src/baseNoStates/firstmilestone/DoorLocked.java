@@ -22,7 +22,7 @@ public class DoorLocked extends DoorState {
 
     @Override
     public void unlockShortly() {
-        door.setState(new DoorUnlockedSh(door, getId()));
+        door.setState(new DoorUnlockedSh(door, 10000));
         System.out.println("Door " + door.getId() + " is now unlocked shortly");
     }
 

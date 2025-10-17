@@ -1,5 +1,9 @@
 package baseNoStates.firstmilestone;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.LocalDate;
+
 public class DirectoryUserGroups {
     private static UserGroup[] UserGroups;
     
@@ -7,29 +11,34 @@ public class DirectoryUserGroups {
     public static void makeUserGroups() {
         // admin
         String[] actionsAdmin = new String[]{Actions.CLOSE,Actions.OPEN, Actions.LOCK, Actions.UNLOCK, Actions.UNLOCK_SHORTLY};
-        String[] daysAdmin = new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-        int[] hoursAdmin = new int[]{00,23};
-        String[] datesAdmin = new String[]{"01,01,2000","31,12,2100"};
+        DayOfWeek[] daysAdmin = DayOfWeek.values();
+        LocalTime[] hoursAdmin = new LocalTime[]{LocalTime.of(0, 0), LocalTime.of(23, 59)};
+        LocalDate[] datesAdmin = new LocalDate[]{LocalDate.of(2000, 1, 1), LocalDate.of(2100, 12, 31)};
+        Schedule scheduleAdmin = new Schedule(daysAdmin, hoursAdmin, datesAdmin);
         String[] doorsAdmin = new String[]{"D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9"};
-        UserGroup admin = new UserGroup("admin",daysAdmin, datesAdmin, hoursAdmin, actionsAdmin, doorsAdmin);
+        UserGroup admin = new UserGroup("admin", scheduleAdmin, actionsAdmin, doorsAdmin);
         
-        //employee
+        // employee
         String[] actionsEmployee = new String[]{Actions.CLOSE, Actions.OPEN, Actions.UNLOCK_SHORTLY};
-        String[] daysEmployee = new String[]{"Mon", "Tue", "Wed", "Thu", "Fri"};
-        int[] hoursEmployee = new int[]{9,17};
-        String[] datesEmployee = new String[]{"01,07,2025","1,3,2026"};
+        DayOfWeek[] daysEmployee = new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY};
+        LocalTime[] hoursEmployee = new LocalTime[]{LocalTime.of(9, 0), LocalTime.of(17, 0)};
+        LocalDate[] datesEmployee = new LocalDate[]{LocalDate.of(2025, 7, 1), LocalDate.of(2026, 3, 1)};
+        Schedule scheduleEmployee = new Schedule(daysEmployee, hoursEmployee, datesEmployee);
         String[] doorsEmployee = new String[]{"D3", "D4", "D5", "D6", "D7", "D8", "D9"};
-        UserGroup employee = new UserGroup("employee", daysEmployee, datesEmployee, hoursEmployee, actionsEmployee, doorsEmployee);
+        UserGroup employee = new UserGroup("employee", scheduleEmployee, actionsEmployee, doorsEmployee);
 
-        //manager
+        // manager
         String[] actionsManager = new String[]{Actions.CLOSE, Actions.OPEN, Actions.LOCK, Actions.UNLOCK, Actions.UNLOCK_SHORTLY};
-        String[] daysManager = new String[]{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        int[] hoursManager = new int[]{8,20};
-        String[] datesManager = new String[]{"01,07,2025","1,3,2026"};
+        DayOfWeek[] daysManager = new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY};
+        LocalTime[] hoursManager = new LocalTime[]{LocalTime.of(8, 0), LocalTime.of(20, 0)};
+        LocalDate[] datesManager = new LocalDate[]{LocalDate.of(2025, 7, 1), LocalDate.of(2026, 3, 1)};
+        Schedule scheduleManager = new Schedule(daysManager, hoursManager, datesManager);
         String[] doorsManager = new String[]{"D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9"};
-        UserGroup manager = new UserGroup("manager", daysManager, datesManager, hoursManager, actionsManager, doorsManager);
-        //guest
-        UserGroup guest = new UserGroup("guest", null, null, null, null, null);
+        UserGroup manager = new UserGroup("manager", scheduleManager, actionsManager, doorsManager);
+
+        // guest
+        Schedule scheduleGuest = null;
+        UserGroup guest = new UserGroup("guest", scheduleGuest, null, null);
         UserGroups = new UserGroup[]{admin, employee, guest, manager};
     }
     
