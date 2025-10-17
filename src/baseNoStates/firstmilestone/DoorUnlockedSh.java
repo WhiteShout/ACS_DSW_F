@@ -1,68 +1,60 @@
 package baseNoStates.firstmilestone;
 import java.util.Timer;
+import java.util.Observer;
 import java.util.TimerTask;
 
-public class DoorUnlockedSh extends DoorState {
+public class DoorUnlockedSh extends DoorState implements Observer {
 
-    public DoorUnlockedSh(Door door, String id) {
+    public DoorUnlockedSh(Door door, long seconds) {
         super(door, DoorState.UNLOCKED_SHORTLY);
-
-        long delay   = 10000; // 10 seconds
-        Timer timer = new Timer();
-        timer.schedule(LockAfterDelay(), delay);
+        Clock clock = new Clock(1000, this); 
 
     }
 
-
-
-    private TimerTask LockAfterDelay() {    
-        return new TimerTask() {
-            @Override
-            public void run() {
-                if (getDoor().isClosed()) {
-                    getDoor().setState(new DoorLocked(getDoor(), getId()));
-                    System.out.println("Door " + getDoor().getId() + " is now locked");
-                } else {
-                    getDoor().setState(new DoorPropped(getDoor(), getId()));
-                    System.out.println("Can't lock door " + getDoor().getId() + " because it's opened or blocked");
-                }
-            }
-        };
+    @Override
+    public void update(java.util.Observable observable, Object arg) {
+        if (door.isClosed()) {
+            door.setState(new DoorLocked(door, getId()));
+            System.out.println("Door " + door.getId() + " is now locked");
+        } else {
+            door.setState(new DoorPropped(door, getId()));
+            System.out.println("Can't lock door " + door.getId() + " because it's opened or blocked");
+        }
     }
 
     public void open() {
-        getDoor().setClosed(false);   
-        System.out.println("Door " + getDoor().getId() + " is now opened"); 
+        door.setClosed(false);   
+        System.out.println("Door " + door.getId() + " is now open"); 
     }
 
     public void close() {
-        getDoor().setClosed(true);   
-        System.out.println("Door " + getDoor().getId() + " is now closed");
+        door.setClosed(true);   
+        System.out.println("Door " + door.getId() + " is now closed");
     }
 
     @Override
     public void unlock() {
-        System.out.println("Door " + getDoor().getId() + " is already unlocked shortly");
+        System.out.println("Door " + door.getId() + " is already unlocked shortly");
     }
 
     @Override
     public void unlockShortly() {
-        System.out.println("Door " + getDoor().getId() + " is already unlocked shortly");
+        System.out.println("Door " + door.getId() + " is already unlocked shortly");
     }
 
     @Override
     public void lock() {
-        if (getDoor().isClosed()) {
-            getDoor().setState(new DoorLocked(getDoor(), getId()));
-            System.out.println("Door " + getDoor().getId() + " is now locked");
+        if (door.isClosed()) {
+            door.setState(new DoorLocked(door, getId()));
+            System.out.println("Door " + door.getId() + " is now locked");
         } else {
-            System.out.println("Can't lock door " + getDoor().getId() + " because it's opened");
+            System.out.println("Can't lock door " + door.getId() + " because it's opened");
         }
     }
 
     @Override
     public void prop() {
-        System.out.println("Door " + getDoor().getId() + " is unlocked");
+        System.out.println("Door " + door.getId() + " is unlocked");
     }
 
     @Override

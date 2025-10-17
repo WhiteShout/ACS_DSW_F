@@ -8,14 +8,11 @@ public class Door {
   private final String id;
   private boolean closed; // physically
   private DoorState state; // logically
-  private Area area1, area2;
 
-  public Door(String id, Area area1, Area area2) {
+  public Door(String id) {
     this.id = id;
     closed = true;
     state = new DoorUnlocked(this, id);
-    this.area1 = area1;
-    this.area2 = area2;
   }
 
   public void processRequest(RequestReader request) {

@@ -1,7 +1,7 @@
 package baseNoStates.firstmilestone;
 
 public abstract class DoorState {
-  private final Door door;
+  protected final Door door;
   private String id;
 
   public DoorState(Door door, String id) {

@@ -7,33 +7,33 @@ public class DoorLocked extends DoorState {
     }
 
     public void open() {
-        System.out.println("Door " + getDoor().getId() + " is locked"); 
+        System.out.println("Door " + door.getId() + " is locked"); 
     }
 
     public void close() {
-        System.out.println("Door " + getDoor().getId() + " is locked");
+        System.out.println("Door " + door.getId() + " is locked");
     }
 
     @Override
     public void unlock() {
-        getDoor().setState(new DoorUnlocked(getDoor(), getId()));
-        System.out.println("Door " + getDoor().getId() + " is now unlocked");
+        door.setState(new DoorUnlocked(door, getId()));
+        System.out.println("Door " + door.getId() + " is now unlocked");
     }
 
     @Override
     public void unlockShortly() {
-        getDoor().setState(new DoorUnlockedSh(getDoor(), getId()));
-        System.out.println("Door " + getDoor().getId() + " is now unlocked shortly");
+        door.setState(new DoorUnlockedSh(door, getId()));
+        System.out.println("Door " + door.getId() + " is now unlocked shortly");
     }
 
     @Override
     public void lock() {
-        System.out.println("Door " + getDoor().getId() + " is already locked");
+        System.out.println("Door " + door.getId() + " is already locked");
     }
 
     @Override
     public void prop() {
-        System.out.println("Door " + getDoor().getId() + " is locked");
+        System.out.println("Door " + door.getId() + " is locked");
     }
 
     @Override

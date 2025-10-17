@@ -96,9 +96,16 @@ public class RequestReader implements Request {
       authorized = false;
       addReason("user doesn't exists");
     } else {
-      //TODO: get the who, where, when and what in order to decide, and if not
-      // authorized add the reason(s)
-      authorized = true;
+      userName = user.getName();
+      if (user.getUserGroup() == null) {
+        authorized = false;
+        addReason("user " + userName + " has no user group");
+      } else {
+        authorized = user.getUserGroup().isActionAllowed(action, doorId, now);
+        if (!authorized) {
+          addReason("user " + userName + " not allowed to do " + action + " on door " + doorId + " at " + now);
+        }
+      }
     }
   }
 }

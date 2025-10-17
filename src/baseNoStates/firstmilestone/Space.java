@@ -4,10 +4,16 @@ public class Space extends Area {
     private Partition Partition_father;
     private Door[] Doors_children;
     
-    public Space(String name, String description, Partition father) {
+    public Space(String name, String description, Partition father, String[] door_IDS) {
         super(name, description);
         this.Partition_father = father;
         father.addSpaceChild(this);
+        for (String id : door_IDS) {
+            Door door = DirectoryDoors.findDoorById(id);
+            if(door != null){
+                this.addDoorChild(new Door[]{door});
+            }
+        }
     }
 
     @Override

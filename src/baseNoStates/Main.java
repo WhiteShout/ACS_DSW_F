@@ -9,8 +9,8 @@ import baseNoStates.firstmilestone.DirectoryAreas;
 
 public class Main {
   public static void main(String[] args) {
-    DirectoryAreas.makeAreas();
     DirectoryDoors.makeDoors();
+    DirectoryAreas.makeAreas();
     DirectoryUsers.makeUsers();
     new WebServer();
   }
