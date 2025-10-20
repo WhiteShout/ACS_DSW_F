@@ -8,11 +8,17 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+ * Classe que implementa un rellotge que notifica als observadors cada cert temps.
+ * Observable y Observer son viables pero estan deprecated en les versions recents de Java.
+ * Per a versions futures es recomana utilitzar les classes de java.util.concurrent.Flow
+ * per implementar el patró Observer.
+ */
 public class Clock extends Observable {
     long delay;
 
     public Clock() {
-        this.delay = 10000; //10 seconds
+        this.delay = 10000; //10 segons
     }
 
     public Clock(long delay, Object observer) {

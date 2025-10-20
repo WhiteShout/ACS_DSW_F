@@ -1,0 +1,148 @@
+@startuml firstMilestoneDiagram
+' PlantUML generated class diagram for package: src/baseNoStates/firstmilestone
+' Generated: 2025-10-19
+skinparam classAttributeIconSize 0
+
+package "firstmilestone" {
+
+  class Actions {
+    +static final String ACTION_OPEN
+    +static final String ACTION_CLOSE
+    +static final String ACTION_LOCK
+    +static final String ACTION_UNLOCK
+    +static final String ACTION_UNLOCK_SHORT
+    +static final String ACTION_PROP
+  }
+
+  class Area {
+    -String name
+    -List<Space> spaces
+    +Area(String name)
+    +String getName()
+    +List<Space> getSpaces()
+  }
+
+  class Space {
+    -String name
+    -List<Partition> partitions
+    +Space(String name)
+    +String getName()
+    +List<Partition> getPartitions()
+  }
+
+  class Partition {
+    -String name
+    -List<Door> doors
+    +Partition(String name)
+    +String getName()
+    +List<Door> getDoors()
+  }
+
+  class Schedule {
+    -String name
+    -Map<String, List<String>> scheduleMap
+    +Schedule(String name)
+    +boolean isAllowed(String dayHour)
+  }
+
+  class User {
+    -String username
+    -String password
+    -UserGroup group
+    +User(String username, String password, UserGroup group)
+    +String getUsername()
+    +UserGroup getGroup()
+  }
+
+  class UserGroup {
+    -String name
+    -Schedule schedule
+    -List<String> allowedActions
+    +UserGroup(String name, Schedule schedule, List<String> allowedActions)
+    +boolean isActionAllowed(String action, Door door)
+  }
+
+  class Door {
+    -String id
+    -boolean closed
+    -DoorState state
+    -Partition parent
+    +Door(String id, boolean closed, Partition parent)
+    +void processRequest(String action, User user)
+    +boolean isClosed()
+  }
+
+  abstract class DoorState {
+    {abstract} +void open(Door door)
+    {abstract} +void close(Door door)
+    {abstract} +void lock(Door door)
+    {abstract} +void unlock(Door door)
+    {abstract} +void unlockShort(Door door)
+    {abstract} +void prop(Door door)
+  }
+
+  class DoorLocked
+  class DoorPropped
+  class DoorUnlocked
+  class DoorUnlockedSh
+
+  ' Requests-related helper classes (not exhaustive)
+  class RequestReader {
+    +String rawRequest
+    +RequestReader(String raw)
+    +Request parse()
+  }
+
+  class RequestArea
+  class RequestRefresh
+
+  ' Directory singletons
+  class DirectoryAreas {
+    +static DirectoryAreas getInstance()
+    +List<Area> getAllAreas()
+    +Area findAreaByName(String name)
+  }
+
+  class DirectoryDoors {
+    +static DirectoryDoors getInstance()
+    +List<Door> getAllDoors()
+    +Door findById(String id)
+  }
+
+  class DirectoryUsers {
+    +static DirectoryUsers getInstance()
+    +List<User> getAllUsers()
+    +User findByCredential(String user, String pwd)
+  }
+
+  class DirectoryUserGroups {
+    +static DirectoryUserGroups getInstance()
+    +List<UserGroup> getAllGroups()
+    +UserGroup findByName(String name)
+  }
+
+}
+
+' Relationships
+UserGroup "1" o-- "*" User : members
+UserGroup "1" o-- "*" "allowedActions : String"
+User "1" --> "1" UserGroup : group
+Area "1" o-- "*" Space : contains
+Space "1" o-- "*" Partition : contains
+Partition "1" o-- "*" Door : contains
+Door "1" --> "1" DoorState : has
+DoorUnlockedSh --|> DoorUnlocked
+DoorUnlocked --|> DoorState
+DoorLocked --|> DoorState
+DoorPropped --|> DoorState
+DirectoryAreas "1" o-- "*" Area
+DirectoryDoors "1" o-- "*" Door
+DirectoryUsers "1" o-- "*" User
+DirectoryUserGroups "1" o-- "*" UserGroup
+
+' Requests
+RequestReader ..> Door : parses
+RequestArea ..> Area
+RequestRefresh ..> DirectoryDoors
+
+@enduml

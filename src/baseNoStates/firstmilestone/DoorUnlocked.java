@@ -2,10 +2,11 @@ package baseNoStates.firstmilestone;
 
 public class DoorUnlocked extends DoorState {
 
-    public DoorUnlocked(Door door, String id) {
-        super(door, DoorState.UNLOCKED);
+    public DoorUnlocked(Door door) {
+        super(door); //Crida al constructor de la classe base doorState per establir com a unlocked la porta
     }
 
+    //es canvia l'estat de la porta a oberta o tancada
     public void open() {
         door.setClosed(false);   
         System.out.println("Door " + door.getId() + " is now open"); 
@@ -21,6 +22,7 @@ public class DoorUnlocked extends DoorState {
         System.out.println("Door " + door.getId() + " is already unlocked");
     }
 
+    //només puc arribar a unlockshortly desde locked
     @Override
     public void unlockShortly() {
         System.out.println("Door " + door.getId() + " is already unlocked");
@@ -29,15 +31,17 @@ public class DoorUnlocked extends DoorState {
     @Override
     public void lock() {
         if (door.isClosed()) {
-            door.setState(new DoorLocked(door, getId()));
+            door.setState(new DoorLocked(door));
             System.out.println("Door " + door.getId() + " is now locked");
         } else {
-            System.out.println("Can't lock door " + door.getId() + " because it's open");
+            System.out.println("Can't lock door " + door.getId() + " because it's open"); //en cas que la porta estigui oberta no puc bloquejarla
         }
     }
-
+    
+    //només s'arriba desde unlock shortly
     @Override
     public void prop() {
+        // En estat 'unlocked' la invocacio de prop() no aplica canvi.
         System.out.println("Door " + door.getId() + " is unlocked");
     }
 

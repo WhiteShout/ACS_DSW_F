@@ -3,7 +3,10 @@ package baseNoStates.firstmilestone;
 import baseNoStates.requests.RequestReader;
 import org.json.JSONObject;
 
-
+/**
+ * Representa una porta del edifici. Mante el seu id, estat logic (DoorState)
+ * i si esta fisicament tancada.
+ */
 public class Door {
   private final String id;
   private boolean closed; // physically
@@ -12,7 +15,7 @@ public class Door {
   public Door(String id) {
     this.id = id;
     closed = true;
-    state = new DoorUnlocked(this, id);
+    state = new DoorUnlocked(this);
   }
 
   public void processRequest(RequestReader request) {
@@ -22,6 +25,7 @@ public class Door {
       String action = request.getAction();
       doAction(action);
     } else {
+      // No autorizado: se registra para depuración.
       System.out.println("not authorized");
     }
     request.setDoorStateName(getStateName());

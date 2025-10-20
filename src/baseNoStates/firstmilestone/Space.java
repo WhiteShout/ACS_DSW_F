@@ -1,12 +1,17 @@
 package baseNoStates.firstmilestone;
 
+/**
+ * Un espai (Space) es una Area concreta que pertany a una Particio pare i
+ * conte portes.
+ */
 public class Space extends Area {
     private Partition Partition_father;
     private Door[] Doors_children;
-    
+
     public Space(String name, String description, Partition father, String[] door_IDS) {
         super(name, description);
         this.Partition_father = father;
+        // Registrem aquest espaci en la seva particio pare
         father.addSpaceChild(this);
         for (String id : door_IDS) {
             Door door = DirectoryDoors.findDoorById(id);
@@ -21,7 +26,8 @@ public class Space extends Area {
         return Doors_children;
     }
 
-    public void addDoorChild(Door[] child){
+    /** Afegeix portes al espaci. S'accepta un array per facilitar trucades desde el inicialitzdor. */
+    public void addDoorChild(Door[] child) { 
         if(this.Doors_children == null){
             this.Doors_children =  child;
         } else {

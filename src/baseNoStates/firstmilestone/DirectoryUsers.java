@@ -5,11 +5,8 @@ public final class DirectoryUsers {
   private static final ArrayList<User> users = new ArrayList<>();
 
   public static void makeUsers() {
-    // now all are the same
-
-    // users without any privilege, just to keep temporally users instead of deleting them,
-    // this is to withdraw all permissions but still to keep user data to give back
-    // permissions later
+    // es creen ususaris d'exemple amb rpñs diferents
+    // en una aplicacio real aquestes dades vindrien d'una base de dades o servei extern
     users.add(new User("Bernat", "12345","guest"));
     users.add(new User("Blai", "77532","guest"));
 
@@ -38,11 +35,15 @@ public final class DirectoryUsers {
   }
 
   public static User findUserByCredential(String credential) {
+    if (credential == null) {
+      return null;
+    }
     for (User user : users) {
-      if (user.getCredential().equals(credential)) {
+      if (credential.equals(user.getCredential())) {
         return user;
       }
     }
+    // No trobat: retornar null per que la funcio que truca pugui registrar o manegar l'error
     System.out.println("user with credential " + credential + " not found");
     return null; // otherwise we get a Java error
   }
