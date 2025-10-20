@@ -9,9 +9,9 @@ import java.time.*;
 * - dates: parell [dataInici, dataFi]
  */
 public class Schedule{
-    DayOfWeek[] days;
-    LocalTime[] hours;
-    LocalDate[] dates;
+    private DayOfWeek[] days;
+    private LocalTime[] hours;
+    private LocalDate[] dates;
 
     Schedule(DayOfWeek[] days, LocalTime[] hours, LocalDate[] dates){
         this.days = days;

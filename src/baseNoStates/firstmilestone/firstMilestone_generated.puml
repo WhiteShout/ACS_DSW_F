@@ -6,73 +6,75 @@ skinparam classAttributeIconSize 0
 package "firstmilestone" {
 
   class Actions {
-    +static final String ACTION_OPEN
-    +static final String ACTION_CLOSE
-    +static final String ACTION_LOCK
-    +static final String ACTION_UNLOCK
-    +static final String ACTION_UNLOCK_SHORT
-    +static final String ACTION_PROP
+    {static} + String ACTION_OPEN
+    {static} + String ACTION_CLOSE
+    {static} + String ACTION_LOCK
+    {static} + String ACTION_UNLOCK
+    {static} + String ACTION_UNLOCK_SHORT
+    {static} + String ACTION_PROP
   }
 
-  class Area {
+  abstract Area {
     -String name
-    -List<Space> spaces
-    +Area(String name)
-    +String getName()
-    +List<Space> getSpaces()
+    -String description
+    {abstract} +Partition[] getPartitions();
+    {abstract} +Door[] getDoors();
   }
 
   class Space {
-    -String name
-    -List<Partition> partitions
-    +Space(String name)
-    +String getName()
-    +List<Partition> getPartitions()
+    -Partition Partition_father
+    -Door[] Doors_children
+    +Door[] getDoors()
+    +void addDoorChild(Door[] child)
+    +Partition[] getPartitions()
   }
 
   class Partition {
-    -String name
-    -List<Door> doors
-    +Partition(String name)
-    +String getName()
-    +List<Door> getDoors()
+    -Partition[] Partition_children
+    -Space[] Space_children
+    +void addPartitionChild(Partition child)
+    +void addSpaceChild(Space child)
+    +Door[] add(Door[] array1, Door[] array2)
+    +Door[] getDoors()
+    +Partition[] getPartitions()
   }
 
   class Schedule {
-    -String name
-    -Map<String, List<String>> scheduleMap
-    +Schedule(String name)
-    +boolean isAllowed(String dayHour)
+    -DayOfWeek[] days
+    -LocalTime[] hours
+    -LocalDate[] dates
   }
 
   class User {
     -String username
-    -String password
-    -UserGroup group
-    +User(String username, String password, UserGroup group)
-    +String getUsername()
-    +UserGroup getGroup()
+    -String credential
+    -UserGroup userGroup
   }
 
   class UserGroup {
-    -String name
+    -User[] users
+    -String userGroupName
     -Schedule schedule
-    -List<String> allowedActions
-    +UserGroup(String name, Schedule schedule, List<String> allowedActions)
-    +boolean isActionAllowed(String action, Door door)
+    -String[] actions
+    -String[] doors
+    
+    +void addUser(User user)
+    +boolean isActionAllowed(String action, String doorId, LocalDateTime now)
   }
 
   class Door {
     -String id
     -boolean closed
     -DoorState state
-    -Partition parent
-    +Door(String id, boolean closed, Partition parent)
-    +void processRequest(String action, User user)
+   
+    +void processRequest(RequestReader request)
     +boolean isClosed()
+    +void doAction(String action)
+
   }
 
   abstract class DoorState {
+    #  Door door
     {abstract} +void open(Door door)
     {abstract} +void close(Door door)
     {abstract} +void lock(Door door)
@@ -81,68 +83,83 @@ package "firstmilestone" {
     {abstract} +void prop(Door door)
   }
 
-  class DoorLocked
-  class DoorPropped
-  class DoorUnlocked
-  class DoorUnlockedSh
+  class DoorLocked{
+    +void open(Door door)
+    +void close(Door door)
+    +void lock(Door door)
+    +void unlock(Door door)
+    +void unlockShort(Door door)
+    +void prop(Door door)
+    }
+  class DoorPropped{
+    +void open(Door door)
+    +void close(Door door)
+    +void lock(Door door)
+    +void unlock(Door door)
+    +void unlockShort(Door door)
+    +void prop(Door door)
+    }
+  class DoorUnlocked{
+    +void open(Door door)
+    +void close(Door door)
+    +void lock(Door door)
+    +void unlock(Door door)
+    +void unlockShort(Door door)
+    +void prop(Door door)
+    }
 
-  ' Requests-related helper classes (not exhaustive)
-  class RequestReader {
-    +String rawRequest
-    +RequestReader(String raw)
-    +Request parse()
-  }
-
-  class RequestArea
-  class RequestRefresh
+  class DoorUnlockedSh{
+    +void update(Obsservable observable, Object arg)
+    +void open(Door door)
+    +void close(Door door)
+    +void lock(Door door)
+    +void unlock(Door door)
+    +void unlockShort(Door door)
+    +void prop(Door door)
+    }
 
   ' Directory singletons
   class DirectoryAreas {
-    +static DirectoryAreas getInstance()
-    +List<Area> getAllAreas()
-    +Area findAreaByName(String name)
+    {static} - ArrayList<Area> allAreas 
+    {static} + Area findAreaByName (String name)
+    {static} + void makeAreas()
   }
 
   class DirectoryDoors {
-    +static DirectoryDoors getInstance()
-    +List<Door> getAllDoors()
-    +Door findById(String id)
+    {static} - ArrayList<Door> allDoors 
+    {static} + void makeDoors()
+    {static} + Area findDoorById (String id)
   }
 
   class DirectoryUsers {
-    +static DirectoryUsers getInstance()
-    +List<User> getAllUsers()
-    +User findByCredential(String user, String pwd)
+    {static} - ArrayList<User> users
+    {static} + void makeUsers()
+    {static} + User findByCredential (String credential)
   }
 
   class DirectoryUserGroups {
-    +static DirectoryUserGroups getInstance()
-    +List<UserGroup> getAllGroups()
-    +UserGroup findByName(String name)
+    {static} - UserGroup[] userGroups
+    {static} + void makeUserGroups()
+    {static} + UserGroup findUserGroupByName (String name)
   }
 
 }
 
 ' Relationships
 UserGroup "1" o-- "*" User : members
-UserGroup "1" o-- "*" "allowedActions : String"
 User "1" --> "1" UserGroup : group
-Area "1" o-- "*" Space : contains
-Space "1" o-- "*" Partition : contains
-Partition "1" o-- "*" Door : contains
+Area "1" o-- "*" Space : extends
+Partition "1" o-- "*" Space : contains
+Space "1" o-- "*" Door : contains
+Area "1" o-- "*" Partition : extends
 Door "1" --> "1" DoorState : has
-DoorUnlockedSh --|> DoorUnlocked
-DoorUnlocked --|> DoorState
-DoorLocked --|> DoorState
-DoorPropped --|> DoorState
+DoorUnlockedSh -u-|>  DoorState
+DoorUnlocked -u-|> DoorState
+DoorLocked -u-|> DoorState
+DoorPropped -u-|> DoorState
 DirectoryAreas "1" o-- "*" Area
 DirectoryDoors "1" o-- "*" Door
 DirectoryUsers "1" o-- "*" User
 DirectoryUserGroups "1" o-- "*" UserGroup
-
-' Requests
-RequestReader ..> Door : parses
-RequestArea ..> Area
-RequestRefresh ..> DirectoryDoors
 
 @enduml
