@@ -1,0 +1,7 @@
+Bon dia,
+som el grup 2 del torn 454. El nostre codi era funcional, però no havíem entès correctament la lògica de la secció de les areas.
+Pensàvem que estàvem estenent area per partition i space, i que una partició podia contenir més spaces, però no més partitions. 
+A la revisió ens has fet veure que no era així: una partició pot tenir més particions com a filles, i per tant hem modificat el 
+codi de manera que una partició pot tenir més areas (tant si són spaces com si són partitions).
+
+Gràcies, i disculpa les molèsties.

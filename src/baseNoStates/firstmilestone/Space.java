@@ -2,44 +2,50 @@ package baseNoStates.firstmilestone;
 
 /**
  * Un espai (Space) es una Area concreta que pertany a una Particio pare i
- * conte portes.
+ * conte portes. Implementa el patró Composite com a fulla (leaf).
  */
-public class Space extends Area {
-    private Partition Partition_father;
-    private Door[] Doors_children;
+public class Space implements Area {
+    private String name;
+    private String description;
+    private Door[] doors;
 
-    public Space(String name, String description, Partition father, String[] door_IDS) {
-        super(name, description);
-        this.Partition_father = father;
-        // Registrem aquest espaci en la seva particio pare
-        father.addSpaceChild(this);
-        for (String id : door_IDS) {
+    public Space(String name, String description, Partition parent, String[] doorIds) {
+        this.name = name;
+        this.description = description;
+        this.doors = new Door[0];
+        
+        if (parent != null) {
+            ((Partition)parent).addChild(this);
+        }
+        
+        for (String id : doorIds) {
             Door door = DirectoryDoors.findDoorById(id);
-            if(door != null){
-                this.addDoorChild(new Door[]{door});
+            if(door != null) {
+                addDoor(door);
             }
         }
     }
 
     @Override
-    public Door[] getDoors() {
-        return Doors_children;
-    }
-
-    /** Afegeix portes al espaci. S'accepta un array per facilitar trucades desde el inicialitzdor. */
-    public void addDoorChild(Door[] child) { 
-        if(this.Doors_children == null){
-            this.Doors_children =  child;
-        } else {
-            Door[] newArray = new Door[this.Doors_children.length + child.length];
-            System.arraycopy(this.Doors_children, 0, newArray, 0, this.Doors_children.length);
-            System.arraycopy(child, 0, newArray, this.Doors_children.length, child.length);
-            this.Doors_children = newArray;
-        }
+    public String getName() {
+        return name;
     }
 
     @Override
-    public Partition[] getPartitions() {
-        return new Partition[]{this.Partition_father};
+    public Door[] getDoors() {
+        return doors;
+    }
+
+    @Override
+    public Area[] getChildren() {
+        return new Area[0]; // Leaf node has no children
+    }
+
+    /** Afegeix una porta al espai. */
+    private void addDoor(Door door) {
+        Door[] newArray = new Door[this.doors.length + 1];
+        System.arraycopy(this.doors, 0, newArray, 0, this.doors.length);
+        newArray[newArray.length - 1] = door;
+        this.doors = newArray;
     }
 }

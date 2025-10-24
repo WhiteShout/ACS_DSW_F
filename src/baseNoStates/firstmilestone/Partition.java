@@ -4,42 +4,32 @@ import java.util.Arrays;
 
 /**
  * Representa una particio (agrupacio logica) que pot contenir particions filles
- * i espais. Hereda de Area. Aquesta classe expon metodes per afegir fills i per
+ * i espais. Implementa de Area. Aquesta classe expon metodes per afegir fills i per
  * obtenir recursivament les portes asociades.
  */
-public class Partition extends Area {
-    private Partition[] Partition_children;
-    private Space[] Space_children;
+public class Partition implements Area {
+    private String name;
+    private String description;
+    private Area[] children;
 
-    /** Constructor de Partition. Si es proporciona una particio pare, ee registra en ella. */
+    /** Constructor de Partition. Si es proporciona una particio pare, es registra en ella. */
     public Partition(String name, String description, Partition father) {
-        super(name, description);
+        this.name = name;
+        this.description = description; 
         if (father != null) {
-            father.addPartitionChild(this);
+            father.addChild(this);
         }
     }
 
-    /** Afegeix una particio filla a aquesta particio. */
-    private void addPartitionChild(Partition child) {
-        if (this.Partition_children == null) {
-            this.Partition_children = new Partition[]{child};
+    /** Afegeix una particio o espai fill a aquesta particio. */
+    public void addChild(Area child) {
+        if (this.children == null) {
+            this.children = new Area[]{child};
         } else {
-            Partition[] newArray = new Partition[this.Partition_children.length + 1];
-            System.arraycopy(this.Partition_children, 0, newArray, 0, this.Partition_children.length);
+            Area[] newArray = new Area[this.children.length + 1];
+            System.arraycopy(this.children, 0, newArray, 0, this.children.length);
             newArray[newArray.length - 1] = child;
-            this.Partition_children = newArray;
-        }
-    }
-
-    /** Afegeix un espai fill a aquesta particio. */
-    public void addSpaceChild(Space child) {
-        if (this.Space_children == null) {
-            this.Space_children = new Space[]{child};
-        } else {
-            Space[] newArray = new Space[this.Space_children.length + 1];
-            System.arraycopy(this.Space_children, 0, newArray, 0, this.Space_children.length);
-            newArray[newArray.length - 1] = child;
-            this.Space_children = newArray;
+            this.children = newArray;
         }
     }
 
@@ -58,22 +48,20 @@ public class Partition extends Area {
     }
 
     @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public Door[] getDoors() {
         Door[] doors = new Door[]{};
         
         System.out.println("Getting doors for partition " + this.getName());
         
-        if(Partition_children != null){
-            for(int i = 0; i < Partition_children.length; i++){
-                doors = add(doors, Partition_children[i].getDoors());
-                System.out.println("Added doors from child partition " + Partition_children[i].getName());
-            }
-        }
-
-        if (Space_children != null) {
-            for (int i = 0; i < Space_children.length; i++) {
-                doors = add(doors, Space_children[i].getDoors());
-                System.out.println("Added doors from child space " + Space_children[i].getName());
+        if(children != null){
+            for(int i = 0; i < children.length; i++){
+                doors = add(doors, children[i].getDoors());
+                System.out.println("Added doors from child partition " + children[i].getName());
             }
         }
         
@@ -82,7 +70,7 @@ public class Partition extends Area {
     }
 
     @Override
-    public Partition[] getPartitions() {
-        return Partition_children;
+    public Area[] getChildren() {
+        return children;
     }
 }
