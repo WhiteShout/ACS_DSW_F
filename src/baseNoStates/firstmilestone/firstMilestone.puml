@@ -141,10 +141,29 @@ package "firstmilestone" {
     {static} + UserGroup findUserGroupByName (String name)
   }
 
+  class Clock {
+    - long delay
+    + void startTimer()
+    + TimerTask notify_time(Clock clock)
+  }
+
+  abstract class Observable {
+    - ArrayList<Observer> observers
+    + void addObserver(Observer o)
+    + void notifyObservers(Object arg)
+  }
+
+  interface Observer {
+    {abstract} + void update(Observable observable, Object arg)
+  }
+
 }
 
 ' Relationships
 UserGroup "1" o-- "*" User : members
+DoorUnlockedSh .u.|> Observer
+Observer -u- Observable
+Observable <|-u- Clock
 User "1" --> "1" UserGroup : group
 Area "1" o-- "*" Space : extends
 Partition "1" o-- "*" Space : contains

@@ -12,7 +12,7 @@ public class DoorUnlockedSh extends DoorState implements Observer {//aquesta cla
     }
     @Override
     public void update(java.util.Observable observable, Object arg) {
-        //System.out.println("/--------------/ \n Update form observable \n /--------------/");
+        //System.out.println("/--------------/ \n    Update form observable \n /--------------/");
         if (door.isClosed()) { //si la porta es tancada, quan pasa el temps es bloqueja, si no es queda propped
             door.setState(new DoorLocked(door));
             System.out.println("Door " + door.getId() + " is now locked");
