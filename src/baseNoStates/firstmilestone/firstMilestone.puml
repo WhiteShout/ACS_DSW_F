@@ -165,33 +165,19 @@ UserGroup "1" o-d- "*" User : members
 DoorUnlockedSh .u.|> Observer
 Observer -u- Observable
 Observable <|-u- Clock
-<<<<<<< HEAD
 User "1" --> "1" UserGroup : group
 Area "1" o-- "*" Space : extends
 Partition "1" o-- "*" Space : contains
 Space "1" o-r- "*" Door : contains
 Area "1" o-- "*" Partition : extends
 Door "1" -d-> "1" DoorState : has
-=======
-User "1" -u-> "1" UserGroup : group
-Area <|.. Space : implements
-Area <|.. Partition : implements
-Space "1" o-- "*" Door : contains
-Partition "1" o-- "*" Area : children
-Door "1" --> "1" DoorState : has
->>>>>>> 719e19c (Co-authored-by: Héctor González <Hectorcde21@users.noreply.github.com>)
 DoorUnlockedSh -u-|>  DoorState
 DoorUnlocked -u-|> DoorState
 DoorLocked -u-|> DoorState
 DoorPropped -u-|> DoorState
 DirectoryAreas "1" o-- "*" Area
-<<<<<<< HEAD
 DirectoryDoors "1" o-l- "*" Door
 DirectoryUsers "1" o-- "*" User
-=======
-DirectoryDoors "1" o-- "*" Door
-DirectoryUsers "1" o-u- "*" User
->>>>>>> 719e19c (Co-authored-by: Héctor González <Hectorcde21@users.noreply.github.com>)
 DirectoryUserGroups "1" o-- "*" UserGroup
 Schedule --> UserGroup
 
